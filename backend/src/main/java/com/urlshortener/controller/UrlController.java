@@ -8,6 +8,7 @@ import com.urlshortener.service.TransformUrl;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,7 +20,11 @@ import java.util.Objects;
 @RestController
 @CrossOrigin(origins ="http://localhost:3000")
 public class UrlController {
-    private static final String host = "localhost:8080/";
+    @Value("${backend.server.url}")
+    private static String backend;
+    @Value("${frontend.server.url}")
+    private static String frontend;
+
     Logger logger = LoggerFactory.getLogger(UrlController.class);
     UrlService urlService;
 
@@ -30,7 +35,7 @@ public class UrlController {
     @GetMapping("/{key}")
     public RedirectView getActualURL(@PathVariable String key) {
         RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/generateUrl");
+        redirectView.setUrl(frontend + "redirected");
         // query DB for actual url
         // check if exists - if yes then setUrl to retrieved URL. if not, redirect back to homepage
         String url = urlService.getUrlFromKey(key);
@@ -55,7 +60,7 @@ public class UrlController {
         while (!urlService.insertURL(key, url)) {
             key = RandomKeyGenerator.generate(6);
         }
-        UrlResponse response = new UrlResponse(url, host + key);
+        UrlResponse response = new UrlResponse(url, backend + key);
         logger.info("Generated URL. Shortened Url: " + response.getShortenedUrl() + "Full URL: " + response.getFullUrl());
         return response;
     }

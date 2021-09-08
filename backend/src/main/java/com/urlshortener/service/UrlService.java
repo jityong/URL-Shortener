@@ -1,6 +1,6 @@
 package com.urlshortener.service;
 
-import com.urlshortener.model.Url;
+import com.urlshortener.model.UrlShortener;
 import com.urlshortener.model.UrlRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,7 @@ public class UrlService {
     @Transactional
     public boolean insertURL(String key, String url) {
         if (Objects.isNull(urlRepository.findByUrlKey(key))) {
-            urlRepository.save(new Url(key, url));
+            urlRepository.save(new UrlShortener(key, url));
             return true;
         }
         return false;
