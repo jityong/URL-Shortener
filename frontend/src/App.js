@@ -7,7 +7,7 @@ function App() {
   return (
       <Router>
           <div>
-              <Route path="/" exact component={GenerateUrl}/>
+              <Route path="/:isRedirect?" exact component={GenerateUrl}/>
           </div>
       </Router>
   );
