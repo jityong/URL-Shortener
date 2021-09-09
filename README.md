@@ -28,5 +28,5 @@ It is deployed on AWS Elastic BeanStalk and is accessible via the link: https://
     ```
     CREATE DATABASE urlshortener;
     ```
-8. Then, run the application using `jityong$ java -jar target/urlshortener-0.0.1-SNAPSHOT.jar`.
+8. Then, run the application using `java -jar target/urlshortener-0.0.1-SNAPSHOT.jar`.
 
