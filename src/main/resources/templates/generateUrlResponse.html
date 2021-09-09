@@ -12,7 +12,7 @@
 </form>
 <div th:switch="${errorMessage}">
     <div th:case="''">
-        <p style="font-weight: bold" th:text= "'FULL URL: ' + ${urlResponse.fullUrl}" />
+        <p style="font-weight: bold" th:text= "'Full URL: ' + ${urlResponse.fullUrl}" />
         <p style="color:green;font-weight: bold" th:text= "'Shortened URL: ' + ${urlResponse.shortenedUrl}" />
     </div>
     <div th:case="'invalid Url'">
