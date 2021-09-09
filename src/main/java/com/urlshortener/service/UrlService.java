@@ -2,12 +2,13 @@ package com.urlshortener.service;
 
 import com.urlshortener.model.UrlShortener;
 import com.urlshortener.model.UrlRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
-@Component
+@Service
 public class UrlService {
     UrlRepository urlRepository;
 
@@ -24,7 +25,8 @@ public class UrlService {
         return false;
     }
 
-    public String getUrlFromKey(String key) {
-        return urlRepository.findByUrlKey(key);
+    @Cacheable(value="urls", key="#urlKey")
+    public String getUrlFromKey(String urlKey) {
+        return urlRepository.findByUrlKey(urlKey);
     }
 }
