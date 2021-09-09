@@ -4,18 +4,21 @@ import com.urlshortener.model.UrlRequest;
 import com.urlshortener.model.UrlResponse;
 import com.urlshortener.service.RandomKeyGenerator;
 import com.urlshortener.service.UrlService;
-import com.urlshortener.service.TransformUrl;
+import com.urlshortener.service.UrlTransformer;
 import org.apache.commons.validator.routines.UrlValidator;
+import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.validation.Valid;
 import java.util.Objects;
 
 @Controller
@@ -24,12 +27,16 @@ public class UrlController {
 
     private static String server;
     UrlService urlService;
+    UrlTransformer urlTransformer;
+    RandomKeyGenerator randomKeyGenerator;
 
     @Autowired
-    UrlController(@Value("${server.url}") String server,
-                  UrlService urlService) {
+    UrlController(@Value("${server.url}") String server, UrlService urlService,
+                  UrlTransformer urlTransformer, RandomKeyGenerator randomKeyGenerator) {
         this.server = server;
         this.urlService = urlService;
+        this.urlTransformer = urlTransformer;
+        this.randomKeyGenerator = randomKeyGenerator;
     }
 
     // query DB for actual url
@@ -61,15 +68,15 @@ public class UrlController {
         model.addAttribute("errorMessage", "");
         model.addAttribute("previousUrlRequest", urlRequest);
         String url = urlRequest.getUrl();
-        url = TransformUrl.transform(url);
+        url = urlTransformer.transform(url);
         UrlValidator urlValidator = new UrlValidator();
         if (!urlValidator.isValid(url)) {
             model.addAttribute("errorMessage", "invalid Url");
         }
-        String key = RandomKeyGenerator.generate(6);
+        String key = randomKeyGenerator.generate(6);
         // ensure atomic and correctness
         while (!urlService.insertURL(key, url)) {
-            key = RandomKeyGenerator.generate(6);
+            key = randomKeyGenerator.generate(6);
         }
         UrlResponse response = new UrlResponse(url, server + key);
         model.addAttribute("urlRequest", new UrlRequest());

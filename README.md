@@ -1,7 +1,7 @@
 # URL-Shortener
 
 ## Overview
-This application is developed using Spring (Java 8). 
+This application is developed using Spring (Java 8) and PostgreSQL database.
 It is deployed on AWS Elastic BeanStalk and is accessible via the link: https://smolurl.net/
 
 ## Set Up (local)
@@ -22,11 +22,12 @@ It is deployed on AWS Elastic BeanStalk and is accessible via the link: https://
     brew install postgresql
     ```
 5. Open the source code and ensure that the JDK is set up for the project in your IDE.
-6. At the root directory, run maven clean install to download all dependencies and build the project, creating an executable JAR file.
-7. To run the application locally, update the user and password of your postgres DB in application.properties and create a Database table called `urlshortener`. 
+6. At the root directory, run `maven clean install` to download all dependencies and build the executable JAR.
+7. To run the application locally, update the user and password of your postgres DB in application.properties and create a Database table called `urlshortener` in your local postgres. 
     Example: 
     ```
     CREATE DATABASE urlshortener;
     ```
 8. Then, run the application using `java -jar target/urlshortener-0.0.1-SNAPSHOT.jar`.
+9. Finally, you can access the app at http://localhost:5000/
 
