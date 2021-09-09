@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Shortern your URL here!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div th:if="${isRedirected}">
+    <p style="color:darkred" th:text= "'Shortened URL is invalid. Generate one below:'" />
+</div>
+<h1>Shortern your URL here!</h1>
+<form action="#" th:action="@{/}" th:object="${urlRequest}" method="post">
+    <p>Url: <input type="text" th:field="*{url}" /></p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+</html>

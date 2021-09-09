@@ -1,5 +1,8 @@
 package com.urlshortener.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class UrlRequest {
     private String url;
 
